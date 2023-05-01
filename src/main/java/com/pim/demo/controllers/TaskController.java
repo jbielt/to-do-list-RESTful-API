@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/tasks")
+@RequestMapping("/api/v1")
 public class TaskController {
 
 
@@ -23,36 +23,36 @@ public class TaskController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/tasks")
     ResponseEntity<List<Task>> getAllTasks(){
         return ResponseEntity.ok(taskService.findAll());
     }
 
-    @GetMapping("/completed")
+    @GetMapping("/tasks/completed")
     public ResponseEntity<List<Task>> getAllCompletedTasks(){
         return ResponseEntity.ok(taskService.findByCompletedTrue());
     }
 
     /*
-    @GetMapping("/incompleted")
+    @GetMapping("/tasks/ncompleted")
     public ResponseEntity<List<Task>> getAllIncompletedTasks(){
         return ResponseEntity.ok(taskService.findAllIncompleteTask());
     }
     */
 
-    @PostMapping("/")
+    @PostMapping("/tasks")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         task.setId(0L);
         return ResponseEntity.ok(taskService.save(task));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("tasks/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task){
         task.setId(id);
         return ResponseEntity.ok(taskService.save(task));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("tasks/{id}")
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable Long id) {
         try{
             taskService.deleteById(id);
