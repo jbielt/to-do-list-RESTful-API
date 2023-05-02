@@ -12,6 +12,7 @@ public interface TaskService {
     Task save(Task task);
     void deleteById(Long id);
     List<Task> findByCompletedTrue();
+    List<Task> findByCompletedFalse();
 
 
 

@@ -33,12 +33,10 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findByCompletedTrue());
     }
 
-    /*
-    @GetMapping("/tasks/ncompleted")
+    @GetMapping("/tasks/incompleted")
     public ResponseEntity<List<Task>> getAllIncompletedTasks(){
-        return ResponseEntity.ok(taskService.findAllIncompleteTask());
+        return ResponseEntity.ok(taskService.findByCompletedFalse());
     }
-    */
 
     @PostMapping("/tasks")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
@@ -47,20 +45,22 @@ public class TaskController {
     }
 
     @PostMapping("tasks/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task){
-        task.setId(id);
+    public ResponseEntity<Task> updateTask(@PathVariable(value = "id") Long idTask, @RequestBody Task task){
+        task.setId(idTask);
         return ResponseEntity.ok(taskService.save(task));
     }
 
     @DeleteMapping("tasks/{id}")
-    public ResponseEntity<HttpStatus> deleteTask(@PathVariable Long id) {
-        try{
-            taskService.deleteById(id);
-            return (ResponseEntity<HttpStatus>) ResponseEntity.noContent();
-        }catch (Exception e){
-            return (ResponseEntity<HttpStatus>) ResponseEntity.internalServerError();
+    public String deleteTask(@PathVariable(value = "id") Long idTask){
+        Task task = taskService.findById(idTask);
+
+        if(task == null){
+            throw new RuntimeException("Task id not found - " + idTask);
         }
 
+        taskService.deleteById(idTask);
+
+        return "Deleted task id - " + idTask;
     }
 
 

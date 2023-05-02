@@ -53,4 +53,8 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> findByCompletedTrue() {
         return taskRepository.findByCompletedTrue();
     }
+    @Override
+    public List<Task> findByCompletedFalse() {
+        return taskRepository.findByCompletedFalse();
+    }
 }
