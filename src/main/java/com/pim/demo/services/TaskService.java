@@ -14,6 +14,8 @@ public interface TaskService {
     List<Task> findByCompletedTrue();
     List<Task> findByCompletedFalse();
 
+    List<Task> findTaskByTaskDescriptionContains(String description);
+
 
 
 

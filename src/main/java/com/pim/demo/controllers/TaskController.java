@@ -1,14 +1,19 @@
 package com.pim.demo.controllers;
 
 
+import com.pim.demo.exception.TaskNotFoundException;
 import com.pim.demo.models.entity.Task;
 import com.pim.demo.services.TaskService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,8 +29,12 @@ public class TaskController {
 
 
     @GetMapping("/tasks")
-    ResponseEntity<List<Task>> getAllTasks(){
-        return ResponseEntity.ok(taskService.findAll());
+    ResponseEntity<List<Task>> getAllTasks(@RequestParam(value = "taskDescription", required = false) String taskDescription){
+        if(taskDescription != null){
+            return ResponseEntity.ok(taskService.findTaskByTaskDescriptionContains(taskDescription));
+        }else{
+            return ResponseEntity.ok(taskService.findAll());
+        }
     }
 
     @GetMapping("/tasks/{id}")
@@ -44,7 +53,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@Valid @NotNull @RequestBody Task task) {
         task.setId(0L);
         return ResponseEntity.ok(taskService.save(task));
     }
@@ -60,7 +69,7 @@ public class TaskController {
         Task task = taskService.findById(idTask);
 
         if(task == null){
-            throw new RuntimeException("Task id not found - " + idTask);
+            throw new TaskNotFoundException("Task id not found - " + idTask);
         }
 
         taskService.deleteById(idTask);

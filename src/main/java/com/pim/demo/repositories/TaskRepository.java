@@ -10,9 +10,8 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
 
-    public List<Task> findByCompletedTrue();
-    public List<Task> findByCompletedFalse();
-
-    //public List<Task> findByNameContaining(String name);
+    public List<Task> findTaskByCompletedTrue();
+    public List<Task> findTaskByCompletedFalse();
+    public List<Task> findTaskByTaskDescriptionContains(String description);
 
 }

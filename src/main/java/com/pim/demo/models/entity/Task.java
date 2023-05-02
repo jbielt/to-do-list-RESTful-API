@@ -2,10 +2,13 @@ package com.pim.demo.models.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -21,10 +24,17 @@ public class Task {
     private Long id;
 
     @Column(name = "task_description")
+    @NotBlank
     private String taskDescription;
 
     @Column(name = "completed")
     private boolean completed;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
 
 
