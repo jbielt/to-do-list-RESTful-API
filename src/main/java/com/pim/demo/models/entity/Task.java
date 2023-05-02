@@ -2,6 +2,7 @@ package com.pim.demo.models.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "task")
@@ -24,10 +26,6 @@ public class Task {
     @Column(name = "completed")
     private boolean completed;
 
-    public Task(String taskDescription, boolean completed) {
-        this.taskDescription = taskDescription;
-        this.completed = completed;
-    }
 
 
 }
