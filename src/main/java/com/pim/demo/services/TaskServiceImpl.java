@@ -1,5 +1,6 @@
 package com.pim.demo.services;
 
+import com.pim.demo.exception.TaskNotFoundException;
 import com.pim.demo.models.entity.Task;
 import com.pim.demo.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
         if(resultTask.isPresent()){
             task = resultTask.get();
         }else{
-            throw new RuntimeException("Did not find task with id: " + id);
+            throw new TaskNotFoundException("Did not find task with id: " + id);
         }
         return task;
     }

@@ -28,6 +28,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findAll());
     }
 
+    @GetMapping("/tasks/{id}")
+    ResponseEntity<Task> getTask(@PathVariable(value = "id") Long idTask){
+        return ResponseEntity.ok(taskService.findById(idTask));
+    }
+
     @GetMapping("/tasks/completed")
     public ResponseEntity<List<Task>> getAllCompletedTasks(){
         return ResponseEntity.ok(taskService.findByCompletedTrue());
