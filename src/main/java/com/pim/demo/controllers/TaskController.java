@@ -30,7 +30,7 @@ public class TaskController {
 
     @GetMapping("/tasks")
     ResponseEntity<List<Task>> getAllTasks(@RequestParam(value = "taskDescription", required = false) String taskDescription){
-        if(taskDescription != null){
+        if(taskDescription != null && !taskDescription.isEmpty()){
             return ResponseEntity.ok(taskService.findTaskByTaskDescriptionContains(taskDescription));
         }else{
             return ResponseEntity.ok(taskService.findAll());
@@ -58,23 +58,28 @@ public class TaskController {
         return ResponseEntity.ok(taskService.save(task));
     }
 
-    @PostMapping("tasks/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable(value = "id") Long idTask, @RequestBody Task task){
-        task.setId(idTask);
-        return ResponseEntity.ok(taskService.save(task));
+    @PutMapping("/tasks/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable(value = "id")Long idTask, @Valid @RequestBody Task task){
+        Task dbTask = taskService.findById(idTask);
+
+        dbTask.setCompleted(task.isCompleted());
+        dbTask.setTaskDescription(task.getTaskDescription());
+
+        return ResponseEntity.ok(taskService.save(dbTask));
     }
 
-    @DeleteMapping("tasks/{id}")
+    @DeleteMapping("/tasks/{id}")
     public String deleteTask(@PathVariable(value = "id") Long idTask){
         Task task = taskService.findById(idTask);
 
         if(task == null){
             throw new TaskNotFoundException("Task id not found - " + idTask);
         }
-
         taskService.deleteById(idTask);
 
         return "Deleted task id - " + idTask;
+
+        //Podria retornar ResponseEntity.ok().build(); con el método tipo RepsponseEntity<?>
     }
 
 

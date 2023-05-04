@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -43,10 +41,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task save(Task task) {
-        if(task.getId() == null){
-            task.setCreatedAt(Instant.now());
-        }
-        task.setUpdatedAt(Instant.now());
         return taskRepository.save(task);
     }
 
